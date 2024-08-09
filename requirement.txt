@@ -1,0 +1,11 @@
+flake8==7.0.0
+ipykernel==6.29.3
+ipywidgets==8.1.2
+markdown
+python-dotenv>=1.0.1
+jupyter>=1.0.0
+backoff==2.2.1
+openai>=1.35.4
+requests>=2.23.2
+marker-pdf
+ocrmypdf
