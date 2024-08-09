@@ -42,7 +42,7 @@ RUN mkdir -p /marker && \
     mkdir -p /usr/share/tessdata && \
     echo "TESSDATA_PREFIX=$(find / -name tessdata -type d | grep tesseract)" > /marker/local.env
 ENV TESSDATA_PREFIX=/usr/share/tessdata
-RUN echo "source /opt/ocr/local.env" >> ~/.bashrc
+RUN echo "source /marker/local.env" >> ~/.bashrc
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
 COPY requirements.txt ./requirements.txt
