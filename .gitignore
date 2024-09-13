@@ -1,5 +1,5 @@
 .devcontainer/
 input/*
 output/*
-.md
+*.md
 .env
