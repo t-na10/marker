@@ -1,4 +1,7 @@
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+FROM ubuntu:22.04
+
+ENV LANG C.UTF-8
+ENV LANGUAGE en_US
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
@@ -24,6 +27,19 @@ RUN set -x && \
     ghostscript \
     libgl1-mesa-glx \
     libglib2.0-0
+
+# pandocのインストール
+RUN wget https://github.com/jgm/pandoc/releases/download/3.3/pandoc-3.3-1-amd64.deb &&\
+    apt-get install -y ./pandoc-3.3-1-amd64.deb && \
+    rm pandoc-3.3-1-amd64.deb &&\
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# aws-cliのインストール
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" &&\
+    unzip awscliv2.zip && \
+    ./aws/install -i /usr/local/aws-cli -b /usr/bin
+
 
 RUN mkdir -p /marker && \
     mkdir -p /usr/share/tessdata && \

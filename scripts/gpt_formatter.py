@@ -1,16 +1,25 @@
+import logging
 import os
-from pathlib import Path
+import re
+import sys
+
 import backoff
 import dotenv
 from openai import OpenAI, RateLimitError
-import logging
-import re
+from tqdm import tqdm
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
 
 dotenv.load_dotenv()
 api_key = os.environ.get('OPENAI_API_KEY')
 openai = OpenAI(api_key=api_key)
+
+# system prompt
+SYSTEM_PROMPT_PATH = "scripts/prompt/system_prompt.txt"
+with open(SYSTEM_PROMPT_PATH, "r") as f:
+    SYSTEM_PROMPT = f.read()
+
 
 @backoff.on_exception(backoff.expo, RateLimitError)
 def get_completions_with_backoff(**kwargs):
@@ -53,8 +62,8 @@ def format_markdown(file_path):
             response = get_completions_with_backoff(
                 model="gpt-4-turbo",
                 messages=[
-                    {"role": "system", "content": "You are a Markdown formatter."},
-                    {"role": "user", "content": f"以下のMarkdownはpdfから取得した内容です。表形式を整形してください。絶対に簡略化しないでください。以下の内容を<markdown></markdown>タグで囲んで出力してください。:\n\n{chunk}"}
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": f"Chunk: <ocr>{chunk}</ocr>"},
                 ]
             )
             formatted_chunk = response.choices[0].message.content
