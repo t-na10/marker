@@ -11,14 +11,25 @@ docker build -t matker-local -f Dockerfile .
 ```
 docker run --gpus=all --rm -it -v $(pwd):/work -w /work matker-local
 ```
-Execution
+
+Setting environment variables with .env file
+
+```
+cp .env.example .env
+```
+
+and add your api key to .env file
+
+
+
+
+### Execution
 
 1. ocr with matker
-    ```
-    marker_single /path/to/file.pdf /path/to/output/folder --batch_multiplier 2 --langs Japanese
-    ```
+   ```
+   marker_single /path/to/file.pdf /path/to/output/folder --batch_multiplier 2 --langs Japanese
+   ```
 2. re-formatter with gpt-4-turbo
-    ```
-    python3 scripts/gpt_formatter.py /path/to/output/folder
-    ```
-
+   ```
+   python3 scripts/gpt_formatter.py /path/to/output/folder
+   ```
